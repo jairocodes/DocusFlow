@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocusFlow</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ================================================
+       SIDEBAR
+       ================================================ -->
+  <aside class="sidebar">
+
+    <!-- Logo -->
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 20 20">
+          <path d="M4 2h8l4 4v12a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2z"/>
+          <path d="M12 2v4h4" fill="none" stroke="white" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <span class="logo-text">Docus<span>Flow</span></span>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="sidebar-nav">
+
+      <div class="nav-label">Principal</div>
+
+      <div class="nav-item active" onclick="setActive(this)">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7A1 1 0 003 11h1v6a1 1 0 001 1h4v-4h2v4h4a1 1 0 001-1v-6h1a1 1 0 00.707-1.707l-7-7z"/>
+        </svg>
+        Mis documentos
+      </div>
+
+      <div class="nav-item" onclick="openScanner()">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+        </svg>
+        Escanear documento
+      </div>
+
+      <div class="nav-item" onclick="setActive(this)">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+        </svg>
+        Búsqueda avanzada
+      </div>
+
+      <div class="nav-item" onclick="setActive(this)">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z"/>
+          <path fill-rule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/>
+        </svg>
+        Compartidos conmigo
+        <span class="nav-badge">3</span>
+      </div>
+
+      <div class="nav-item" onclick="setActive(this)">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9zM4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"/>
+        </svg>
+        Recientes
+      </div>
+
+      <div class="nav-label">Mis carpetas</div>
+
+      <div class="nav-item" onclick="setActive(this)">
+        <span class="nav-folder-dot" style="background:#d4962a;"></span>
+        Contratos
+      </div>
+      <div class="nav-item" onclick="setActive(this)">
+        <span class="nav-folder-dot" style="background:#1a7a4a;"></span>
+        Facturas 2026
+      </div>
+      <div class="nav-item" onclick="setActive(this)">
+        <span class="nav-folder-dot" style="background:#1a4fd6;"></span>
+        Recursos Humanos
+      </div>
+      <div class="nav-item" onclick="setActive(this)">
+        <span class="nav-folder-dot" style="background:#8b3fce;"></span>
+        Legal
+      </div>
+      <div class="nav-item" onclick="setActive(this)">
+        <span class="nav-folder-dot" style="background:#b02020;"></span>
+        Proveedores
+      </div>
+
+      <div class="nav-label">Administración</div>
+
+      <div class="nav-item" onclick="setActive(this)">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+        </svg>
+        Usuarios y roles
+      </div>
+
+      <div class="nav-item" onclick="setActive(this)">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"/>
+        </svg>
+        Configuración
+      </div>
+
+    </nav>
+
+    <!-- Usuario activo -->
+    <div class="sidebar-user">
+      <div class="user-avatar">EG</div>
+      <div>
+        <div class="user-name">Emanuel Garrido</div>
+        <div class="user-role">Analista · RRHH</div>
+      </div>
+      <button class="user-menu">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/>
+        </svg>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- ================================================
+       MAIN
+       ================================================ -->
+  <main class="main">
+
+    <!-- Barra superior -->
+    <div class="topbar">
+      <span class="page-title">Mis documentos</span>
+
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+        </svg>
+        <input type="text" class="search-input" placeholder="Buscar por nombre, texto extraído o etiqueta...">
+      </div>
+
+      <div class="topbar-actions">
+        <button class="btn btn-scan" onclick="openScanner()">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+          </svg>
+          Escanear
+        </button>
+        <button class="btn btn-primary" onclick="showToast('Función de carga disponible')">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"/>
+          </svg>
+          Subir archivo
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7A1 1 0 003 11h1v6a1 1 0 001 1h4v-4h2v4h4a1 1 0 001-1v-6h1a1 1 0 00.707-1.707l-7-7z"/>
+        </svg>
+        Inicio
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"/>
+        </svg>
+        <span class="bc-current">Mis documentos</span>
+      </div>
+
+      <!-- Estadísticas -->
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-label">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+            </svg>
+            Total documentos
+          </div>
+          <div class="stat-value">248</div>
+          <div class="stat-sub">+12 este mes</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/>
+            </svg>
+            Escaneados (abril)
+          </div>
+          <div class="stat-value">34</div>
+          <div class="stat-sub">+8 vs. mes anterior</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z"/>
+            </svg>
+            Compartidos
+          </div>
+          <div class="stat-value">12</div>
+          <div class="stat-sub">3 pendientes de revisión</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5z"/>
+            </svg>
+            Espacio usado
+          </div>
+          <div class="stat-value">1.8 GB</div>
+          <div class="stat-sub">de 10 GB disponibles</div>
+        </div>
+
+      </div>
+
+      <!-- Sección carpetas -->
+      <div class="section-header">
+        <span class="section-title-text">Carpetas</span>
+        <div class="view-toggle">
+          <button class="vt-btn active" title="Vista cuadrícula">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+          </button>
+          <button class="vt-btn" title="Vista lista">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="folder-grid">
+
+        <div class="folder-card" onclick="showToast('Abriendo carpeta Contratos...')">
+          <svg class="folder-icon-wrap" viewBox="0 0 40 34">
+            <path d="M2 8a2 2 0 012-2h9l3 3h18a2 2 0 012 2v17a2 2 0 01-2 2H4a2 2 0 01-2-2V8z" fill="#FAC775"/>
+            <path d="M2 13h36v14a2 2 0 01-2 2H4a2 2 0 01-2-2V13z" fill="#d4962a"/>
+          </svg>
+          <div class="folder-name">Contratos</div>
+          <div class="folder-count">42 archivos</div>
+        </div>
+
+        <div class="folder-card" onclick="showToast('Abriendo carpeta Facturas...')">
+          <svg class="folder-icon-wrap" viewBox="0 0 40 34">
+            <path d="M2 8a2 2 0 012-2h9l3 3h18a2 2 0 012 2v17a2 2 0 01-2 2H4a2 2 0 01-2-2V8z" fill="#9FE1CB"/>
+            <path d="M2 13h36v14a2 2 0 01-2 2H4a2 2 0 01-2-2V13z" fill="#1a7a4a"/>
+          </svg>
+          <div class="folder-name">Facturas 2026</div>
+          <div class="folder-count">87 archivos</div>
+        </div>
+
+        <div class="folder-card" onclick="showToast('Abriendo carpeta RR.HH....')">
+          <svg class="folder-icon-wrap" viewBox="0 0 40 34">
+            <path d="M2 8a2 2 0 012-2h9l3 3h18a2 2 0 012 2v17a2 2 0 01-2 2H4a2 2 0 01-2-2V8z" fill="#B5D4F4"/>
+            <path d="M2 13h36v14a2 2 0 01-2 2H4a2 2 0 01-2-2V13z" fill="#1a4fd6"/>
+          </svg>
+          <div class="folder-name">Recursos Humanos</div>
+          <div class="folder-count">31 archivos</div>
+        </div>
+
+        <div class="folder-card" onclick="showToast('Abriendo carpeta Legal...')">
+          <svg class="folder-icon-wrap" viewBox="0 0 40 34">
+            <path d="M2 8a2 2 0 012-2h9l3 3h18a2 2 0 012 2v17a2 2 0 01-2 2H4a2 2 0 01-2-2V8z" fill="#d4b0f5"/>
+            <path d="M2 13h36v14a2 2 0 01-2 2H4a2 2 0 01-2-2V13z" fill="#8b3fce"/>
+          </svg>
+          <div class="folder-name">Legal</div>
+          <div class="folder-count">19 archivos</div>
+        </div>
+
+        <div class="folder-card" onclick="showToast('Abriendo carpeta Proveedores...')">
+          <svg class="folder-icon-wrap" viewBox="0 0 40 34">
+            <path d="M2 8a2 2 0 012-2h9l3 3h18a2 2 0 012 2v17a2 2 0 01-2 2H4a2 2 0 01-2-2V8z" fill="#f5b5b5"/>
+            <path d="M2 13h36v14a2 2 0 01-2 2H4a2 2 0 01-2-2V13z" fill="#b02020"/>
+          </svg>
+          <div class="folder-name">Proveedores</div>
+          <div class="folder-count">55 archivos</div>
+        </div>
+
+        <div class="folder-card" onclick="showToast('Abriendo carpeta General...')">
+          <svg class="folder-icon-wrap" viewBox="0 0 40 34">
+            <path d="M2 8a2 2 0 012-2h9l3 3h18a2 2 0 012 2v17a2 2 0 01-2 2H4a2 2 0 01-2-2V8z" fill="#D3D1C7"/>
+            <path d="M2 13h36v14a2 2 0 01-2 2H4a2 2 0 01-2-2V13z" fill="#6b6960"/>
+          </svg>
+          <div class="folder-name">General</div>
+          <div class="folder-count">14 archivos</div>
+        </div>
+
+      </div>
+
+      <!-- Sección documentos recientes -->
+      <div class="section-header">
+        <span class="section-title-text">Documentos recientes</span>
+        <button class="btn" style="height:30px; font-size:12px; padding:0 10px;">Ver todos</button>
+      </div>
+
+      <div class="doc-list">
+
+        <div class="doc-row" onclick="openPDF('Contrato_servicio_TechCorp_2025.pdf')">
+          <div class="file-icon pdf">PDF</div>
+          <div class="doc-info">
+            <div class="doc-name">Contrato_servicio_TechCorp_2025.pdf</div>
+            <div class="doc-meta">Escaneado · 28 abr 2026 · OCR extraído</div>
+          </div>
+          <span class="doc-tag blue">Contrato</span>
+          <span class="doc-size">1.2 MB</span>
+          <div class="doc-actions">
+            <button class="icon-btn" title="Ver" onclick="event.stopPropagation(); openPDF('Contrato_servicio_TechCorp_2025.pdf')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10z"/></svg>
+            </button>
+            <button class="icon-btn" title="Descargar" onclick="event.stopPropagation(); showToast('Descargando documento...')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/></svg>
+            </button>
+            <button class="icon-btn" title="Compartir" onclick="event.stopPropagation(); showToast('Enlace copiado al portapapeles')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="doc-row" onclick="openPDF('Factura_001_abril_2026.pdf')">
+          <div class="file-icon pdf">PDF</div>
+          <div class="doc-info">
+            <div class="doc-name">Factura_001_abril_2026.pdf</div>
+            <div class="doc-meta">Escaneado · 25 abr 2026 · OCR extraído</div>
+          </div>
+          <span class="doc-tag green">Factura</span>
+          <span class="doc-size">0.8 MB</span>
+          <div class="doc-actions">
+            <button class="icon-btn" onclick="event.stopPropagation(); openPDF('Factura_001_abril_2026.pdf')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10z"/></svg>
+            </button>
+            <button class="icon-btn" onclick="event.stopPropagation(); showToast('Descargando documento...')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/></svg>
+            </button>
+            <button class="icon-btn" onclick="event.stopPropagation(); showToast('Enlace copiado al portapapeles')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="doc-row" onclick="openPDF('Cedula_empleado_033.jpg')">
+          <div class="file-icon img">IMG</div>
+          <div class="doc-info">
+            <div class="doc-name">Foto_documento_cedula_empleado_033.jpg</div>
+            <div class="doc-meta">Escaneado · 22 abr 2026 · OCR extraído</div>
+          </div>
+          <span class="doc-tag gray">RR.HH.</span>
+          <span class="doc-size">3.4 MB</span>
+          <div class="doc-actions">
+            <button class="icon-btn" onclick="event.stopPropagation(); openPDF('Cedula_empleado_033.jpg')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10z"/></svg>
+            </button>
+            <button class="icon-btn" onclick="event.stopPropagation(); showToast('Descargando documento...')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/></svg>
+            </button>
+            <button class="icon-btn" onclick="event.stopPropagation(); showToast('Enlace copiado al portapapeles')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="doc-row" onclick="openPDF('Acta_reunion_directiva.pdf')">
+          <div class="file-icon doc">DOC</div>
+          <div class="doc-info">
+            <div class="doc-name">Acta_reunion_directiva_marzo_2026.pdf</div>
+            <div class="doc-meta">Subido · 18 abr 2026 · Sin OCR</div>
+          </div>
+          <span class="doc-tag blue">Legal</span>
+          <span class="doc-size">0.5 MB</span>
+          <div class="doc-actions">
+            <button class="icon-btn" onclick="event.stopPropagation(); openPDF('Acta_reunion_directiva.pdf')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10z"/></svg>
+            </button>
+            <button class="icon-btn" onclick="event.stopPropagation(); showToast('Descargando documento...')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/></svg>
+            </button>
+            <button class="icon-btn" onclick="event.stopPropagation(); showToast('Enlace copiado al portapapeles')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="doc-row" onclick="openPDF('Presupuesto_Q2_2026.xlsx')">
+          <div class="file-icon xls">XLS</div>
+          <div class="doc-info">
+            <div class="doc-name">Presupuesto_Q2_2026.xlsx</div>
+            <div class="doc-meta">Subido · 10 abr 2026 · Sin OCR</div>
+          </div>
+          <span class="doc-tag amber">Finanzas</span>
+          <span class="doc-size">2.1 MB</span>
+          <div class="doc-actions">
+            <button class="icon-btn" onclick="event.stopPropagation(); openPDF('Presupuesto_Q2_2026.xlsx')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10z"/></svg>
+            </button>
+            <button class="icon-btn" onclick="event.stopPropagation(); showToast('Descargando documento...')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/></svg>
+            </button>
+            <button class="icon-btn" onclick="event.stopPropagation(); showToast('Enlace copiado al portapapeles')">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ================================================
+     MODAL — ESCANEAR DOCUMENTO
+     ================================================ -->
+<div class="modal-overlay" id="scannerModal" onclick="if(event.target===this) closeScanner()">
+  <div class="modal">
+    <div class="modal-title">Escanear documento</div>
+    <p class="modal-sub">Conecta el escáner y coloca el documento. La aplicación extraerá el texto automáticamente (OCR).</p>
+
+    <div class="scanner-area" onclick="showToast('Iniciando escáner...')">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="6" y="12" width="36" height="24" rx="3"/>
+        <line x1="6" y1="24" x2="42" y2="24"/>
+        <line x1="14" y1="8" x2="14" y2="12"/>
+        <line x1="24" y1="8" x2="24" y2="12"/>
+        <line x1="34" y1="8" x2="34" y2="12"/>
+      </svg>
+      <p>Haz clic para iniciar el escáner</p>
+      <span>O arrastra un archivo aquí</span>
+    </div>
+
+    <div class="modal-form">
+      <div class="form-group">
+        <label class="form-label">Nombre del documento</label>
+        <input type="text" class="form-input" placeholder="Ej. Contrato_proveedor_mayo_2026">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Carpeta destino</label>
+          <select class="form-select">
+            <option>Mis documentos</option>
+            <option>Contratos</option>
+            <option>Facturas 2026</option>
+            <option>Recursos Humanos</option>
+            <option>Legal</option>
+            <option>Proveedores</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Etiqueta</label>
+          <select class="form-select">
+            <option>Sin etiqueta</option>
+            <option>Contrato</option>
+            <option>Factura</option>
+            <option>Legal</option>
+            <option>RR.HH.</option>
+            <option>Finanzas</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeScanner()">Cancelar</button>
+      <button class="btn btn-scan" onclick="closeScanner(); showToast('Documento escaneado y guardado')">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/>
+        </svg>
+        Escanear ahora
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================
+     MODAL — VISOR PDF
+     ================================================ -->
+<div class="pdf-viewer" id="pdfViewer" onclick="if(event.target===this) closePDF()">
+  <div class="pdf-shell">
+
+    <div class="pdf-topbar">
+      <div class="file-icon pdf" style="width:26px; height:30px; font-size:8px;">PDF</div>
+      <span class="pdf-title" id="pdfTitle">Contrato_servicio_TechCorp_2025.pdf</span>
+      <div class="pdf-toolbar">
+        <button class="icon-btn" title="Página anterior">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/></svg>
+        </button>
+        <span style="font-size:12px; color:var(--text3);">1 / 4</span>
+        <button class="icon-btn" title="Página siguiente">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"/></svg>
+        </button>
+        <button class="icon-btn" title="Descargar" onclick="showToast('Descargando documento...')">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/></svg>
+        </button>
+        <button class="icon-btn" title="Imprimir" onclick="showToast('Enviando a impresora...')">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a1 1 0 001 1h6a1 1 0 001-1v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a1 1 0 00-1-1H6a1 1 0 00-1 1zm2 0h6v3H7V4zm-1 9a1 1 0 011-1h4a1 1 0 011 1v3H6v-3zm7-6a1 1 0 100 2 1 1 0 000-2z"/></svg>
+        </button>
+        <button class="icon-btn" title="Cerrar" onclick="closePDF()" style="margin-left:4px;">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="pdf-content">
+      <div class="pdf-page">
+        <div class="pdf-page-header">
+          <div>
+            <div class="pdf-page-logo">DocScan Corp.</div>
+            <div style="font-size:10px; color:#888; margin-top:2px;">Gestión Documental Digital</div>
+          </div>
+          <div style="font-size:10px; color:#aaa; text-align:right;">
+            Ref: DS-2026-0042<br>
+            30 de abril, 2026
+          </div>
+        </div>
+        <div class="pdf-page-title">Contrato de Prestación de Servicios</div>
+        <div class="pdf-line full"></div>
+        <div class="pdf-line medium"></div>
+        <div class="pdf-line short"></div>
+        <div class="pdf-section-title">CLÁUSULA 1 — PARTES CONTRATANTES</div>
+        <div class="pdf-line full sm"></div>
+        <div class="pdf-line full sm"></div>
+        <div class="pdf-line medium sm"></div>
+        <div class="pdf-section-title">CLÁUSULA 2 — OBJETO DEL CONTRATO</div>
+        <div class="pdf-line full sm"></div>
+        <div class="pdf-line full sm"></div>
+        <div class="pdf-line full sm"></div>
+        <div class="pdf-line short sm"></div>
+        <div class="pdf-section-title">CLÁUSULA 3 — DURACIÓN</div>
+        <div class="pdf-line full sm"></div>
+        <div class="pdf-line medium sm"></div>
+        <div style="display:flex; gap:40px; margin-top:20px;">
+          <div style="flex:1; border-top:1px solid #ccc; padding-top:8px; font-size:10px; color:#888;">Firma del contratante</div>
+          <div style="flex:1; border-top:1px solid #ccc; padding-top:8px; font-size:10px; color:#888;">Firma del proveedor</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================================================
+     TOAST — Notificación
+     ================================================ -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 20 20" fill="currentColor">
+    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+  </svg>
+  <span id="toastMsg">Acción realizada</span>
+</div>
+
+<!-- Script externo (debe ir al final del body) -->
+<script src="app.js"></script>
+
+</body>
+</html>
