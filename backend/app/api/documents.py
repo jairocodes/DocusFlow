@@ -43,19 +43,14 @@ async def upload_document(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-    # El pipeline OCR se lanzará en la siguiente feature
-    background_tasks.add_task(_placeholder_ocr, doc.id)
+    from app.workers.ocr_task import run_ocr_pipeline
+    background_tasks.add_task(run_ocr_pipeline, doc.id)
 
     return {
         "success": True,
         "message": "Upload iniciado, procesando OCR...",
         "data": {"id": str(doc.id), "estado_ocr": doc.estado_ocr},
     }
-
-
-async def _placeholder_ocr(doc_id: uuid.UUID):
-    """Sustituido por el pipeline real en feature/pipeline-ocr."""
-    pass
 
 
 @router.get("", response_model=DocumentListResponse)
