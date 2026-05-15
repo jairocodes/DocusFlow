@@ -103,10 +103,17 @@ async def search_documents(
     current_user: CurrentUser,
     db: Annotated[AsyncSession, Depends(get_db)],
     q: str = "",
+    tipo: str | None = None,
+    tag_id: str | None = None,
+    folder_id: str | None = None,
+    fecha_desde: str | None = None,
+    fecha_hasta: str | None = None,
+    estado_ocr: str | None = None,
     page: int = 1,
     limit: int = 20,
 ):
     from sqlalchemy import text as sa_text
+    from datetime import date
     query = select(Document)
     if current_user.rol != "admin":
         query = query.where(Document.usuario_id == current_user.id)
@@ -118,6 +125,25 @@ async def search_documents(
                 fts.bindparams(q=q),
             )
         )
+    if tipo:
+        exts = {
+            "pdf": ["pdf"],
+            "imagen": ["jpg", "jpeg", "png"],
+            "word": ["doc", "docx"],
+            "excel": ["xls", "xlsx"],
+        }.get(tipo, [tipo])
+        query = query.where(Document.extension.in_(exts))
+    if tag_id:
+        query = query.where(Document.tag_id == uuid.UUID(tag_id))
+    if folder_id:
+        query = query.where(Document.carpeta_id == uuid.UUID(folder_id))
+    if fecha_desde:
+        query = query.where(Document.fecha_subida >= date.fromisoformat(fecha_desde))
+    if fecha_hasta:
+        query = query.where(Document.fecha_subida <= date.fromisoformat(fecha_hasta))
+    if estado_ocr:
+        query = query.where(Document.estado_ocr == estado_ocr)
+
     total_result = await db.execute(select(func.count()).select_from(query.subquery()))
     total = total_result.scalar_one()
     query = query.order_by(Document.fecha_subida.desc()).offset((page - 1) * limit).limit(limit)

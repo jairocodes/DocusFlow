@@ -18,8 +18,8 @@ export const updateDocument = (id, body) =>
 export const deleteDocument = (id) =>
   client.delete(`/documents/${id}`).then((r) => r.data)
 
-export const searchDocuments = (q, params) =>
-  client.get('/documents/search', { params: { q, ...params } }).then((r) => r.data)
+export const searchDocuments = (filters) =>
+  client.get('/documents/search', { params: filters }).then((r) => r.data)
 
 export const recentDocuments = () =>
   client.get('/documents/recent').then((r) => r.data)
