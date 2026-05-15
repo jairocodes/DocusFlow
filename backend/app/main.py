@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="DocusFlow API",
-    version="0.1.0",
+    version="0.2.0",
     docs_url="/docs",
     redoc_url="/redoc",
     lifespan=lifespan,
