@@ -1,39 +1,32 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useParams, useLocation, useNavigate, Link } from 'react-router-dom'
 import Topbar from '../components/layout/Topbar'
-import StatsGrid from '../components/ui/StatsGrid'
-import FolderGrid from '../components/ui/FolderGrid'
 import DocumentList from '../components/ui/DocumentList'
 import UploadModal from '../components/ui/UploadModal'
-import { getDashboardStats } from '../api/stats'
-import { listDocuments, deleteDocument } from '../api/documents'
-import { listFolders } from '../api/folders'
+import { getFolderDocuments } from '../api/folders'
+import { deleteDocument } from '../api/documents'
 import useToastStore from '../store/useToastStore'
 
-export default function Dashboard() {
-  const [stats, setStats] = useState(null)
+export default function FolderPage() {
+  const { id } = useParams()
+  const { state } = useLocation()
+  const navigate = useNavigate()
+  const showToast = useToastStore((s) => s.show)
+  const folder = state?.folder
+
   const [docs, setDocs] = useState([])
-  const [folders, setFolders] = useState([])
   const [total, setTotal] = useState(0)
   const [uploadOpen, setUploadOpen] = useState(false)
-  const showToast = useToastStore((s) => s.show)
-  const navigate = useNavigate()
 
   const load = useCallback(async () => {
     try {
-      const [statsData, docsData, foldersData] = await Promise.all([
-        getDashboardStats(),
-        listDocuments({ page: 1, limit: 20 }),
-        listFolders(),
-      ])
-      setStats(statsData)
-      setDocs(docsData.data)
-      setTotal(docsData.total)
-      setFolders(foldersData)
+      const data = await getFolderDocuments(id)
+      setDocs(data.data)
+      setTotal(data.total)
     } catch {
-      showToast('Error al cargar los datos', 'error')
+      showToast('Error al cargar la carpeta', 'error')
     }
-  }, [])
+  }, [id])
 
   useEffect(() => { load() }, [load])
 
@@ -50,33 +43,20 @@ export default function Dashboard() {
 
   return (
     <>
-      <Topbar title="Mis documentos" onUpload={() => setUploadOpen(true)} />
-
+      <Topbar
+        title={folder?.nombre || 'Carpeta'}
+        onUpload={() => setUploadOpen(true)}
+      />
       <div className="content">
         <div className="breadcrumb">
           <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7A1 1 0 003 11h1v6a1 1 0 001 1h4v-4h2v4h4a1 1 0 001-1v-6h1a1 1 0 00.707-1.707l-7-7z" /></svg>
-          Inicio
+          <Link to="/" style={{ color: 'var(--text3)', textDecoration: 'none' }}>Inicio</Link>
           <svg viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" /></svg>
-          <span className="bc-current">Mis documentos</span>
+          <span className="bc-current">{folder?.nombre || 'Carpeta'}</span>
         </div>
 
-        <StatsGrid stats={stats} />
-
-        {folders.length > 0 && (
-          <>
-            <div className="section-header">
-              <span className="section-title-text">Carpetas</span>
-            </div>
-            <FolderGrid folders={folders} />
-          </>
-        )}
-
         <div className="section-header" style={{ marginBottom: 12 }}>
-          <span className="section-title-text">Documentos recientes ({total})</span>
-          {total > 20 && (
-            <button className="btn" style={{ height: 30, fontSize: 12, padding: '0 10px' }}
-              onClick={() => navigate('/search')}>Ver todos</button>
-          )}
+          <span className="section-title-text">Documentos ({total})</span>
         </div>
 
         <DocumentList
@@ -90,7 +70,6 @@ export default function Dashboard() {
       <UploadModal
         open={uploadOpen}
         onClose={() => setUploadOpen(false)}
-        folders={folders}
         onUploaded={() => { setUploadOpen(false); load() }}
       />
     </>
