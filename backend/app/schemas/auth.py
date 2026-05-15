@@ -6,12 +6,6 @@ class LoginRequest(BaseModel):
     password: str
 
 
-class TokenResponse(BaseModel):
-    access_token: str
-    token_type: str = "bearer"
-    user: "UserPublic"
-
-
 class UserPublic(BaseModel):
     id: str
     nombre_completo: str
@@ -22,6 +16,12 @@ class UserPublic(BaseModel):
     cuota_bytes: int
 
     model_config = {"from_attributes": True}
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserPublic
 
 
 class ChangePasswordRequest(BaseModel):
