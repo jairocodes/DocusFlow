@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 
 class DocumentOut(BaseModel):
-    id: str
+    id: uuid.UUID
     nombre: str
     tipo: str
     extension: str
@@ -13,10 +13,10 @@ class DocumentOut(BaseModel):
     estado_ocr: str
     tamanio_bytes: int
     storage_path: str
-    carpeta_id: str | None
-    usuario_id: str
-    tag_id: str | None
-    expediente_id: str | None
+    carpeta_id: uuid.UUID | None
+    usuario_id: uuid.UUID
+    tag_id: uuid.UUID | None
+    expediente_id: uuid.UUID | None
     tipo_doc_aduanero: str | None
     metadatos_extraidos: dict | None
     fecha_subida: datetime

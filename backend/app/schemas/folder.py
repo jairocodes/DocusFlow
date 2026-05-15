@@ -1,3 +1,5 @@
+import uuid
+
 from pydantic import BaseModel
 
 
@@ -12,7 +14,7 @@ class FolderUpdate(BaseModel):
 
 
 class FolderOut(BaseModel):
-    id: str
+    id: uuid.UUID
     nombre: str
     color_hex: str
     total_docs: int = 0

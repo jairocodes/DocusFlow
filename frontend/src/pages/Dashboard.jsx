@@ -5,6 +5,7 @@ import StatsGrid from '../components/ui/StatsGrid'
 import FolderGrid from '../components/ui/FolderGrid'
 import DocumentList from '../components/ui/DocumentList'
 import UploadModal from '../components/ui/UploadModal'
+import FolderModal from '../components/ui/FolderModal'
 import { getDashboardStats } from '../api/stats'
 import { listDocuments, deleteDocument } from '../api/documents'
 import { listFolders } from '../api/folders'
@@ -18,6 +19,7 @@ export default function Dashboard() {
   const [tags, setTags] = useState([])
   const [total, setTotal] = useState(0)
   const [uploadOpen, setUploadOpen] = useState(false)
+  const [folderOpen, setFolderOpen] = useState(false)
   const showToast = useToastStore((s) => s.show)
   const navigate = useNavigate()
 
@@ -66,16 +68,27 @@ export default function Dashboard() {
 
         <StatsGrid stats={stats} />
 
+        <div className="section-header">
+          <span className="section-title-text">
+            Carpetas {folders.length > 0 && `(${folders.length})`}
+          </span>
+          <button
+            className="btn"
+            style={{ height: 30, fontSize: 12, padding: '0 10px', display: 'flex', alignItems: 'center', gap: 5 }}
+            onClick={() => setFolderOpen(true)}
+          >
+            <svg viewBox="0 0 20 20" fill="currentColor" style={{ width: 13, height: 13 }}>
+              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+            </svg>
+            Nueva carpeta
+          </button>
+        </div>
+
         {folders.length > 0 && (
-          <>
-            <div className="section-header">
-              <span className="section-title-text">Carpetas</span>
-            </div>
-            <FolderGrid folders={folders} />
-          </>
+          <FolderGrid folders={folders} />
         )}
 
-        <div className="section-header" style={{ marginBottom: 12 }}>
+        <div className="section-header" style={{ marginTop: folders.length > 0 ? 0 : 8, marginBottom: 12 }}>
           <span className="section-title-text">Documentos recientes ({total})</span>
           {total > 20 && (
             <button className="btn" style={{ height: 30, fontSize: 12, padding: '0 10px' }}
@@ -97,6 +110,12 @@ export default function Dashboard() {
         folders={folders}
         tags={tags}
         onUploaded={() => { setUploadOpen(false); load() }}
+      />
+
+      <FolderModal
+        open={folderOpen}
+        onClose={() => setFolderOpen(false)}
+        onCreated={load}
       />
     </>
   )

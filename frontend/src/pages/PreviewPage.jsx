@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
+import client from '../api/client'
 import useToastStore from '../store/useToastStore'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -19,21 +20,41 @@ export default function PreviewPage() {
 
   const [numPages, setNumPages] = useState(null)
   const [pageNumber, setPageNumber] = useState(1)
+  const [blobUrl, setBlobUrl] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  const previewSrc = `/api/v1/documents/${id}/preview`
   const isPdf = doc?.tipo === 'pdf' || doc?.extension === 'pdf'
   const isImage = ['jpg', 'jpeg', 'png'].includes(doc?.extension)
 
+  useEffect(() => {
+    let url = null
+    client.get(`/documents/${id}/preview`, { responseType: 'blob' })
+      .then((res) => {
+        url = URL.createObjectURL(res.data)
+        setBlobUrl(url)
+      })
+      .catch(() => showToast('Error al cargar el archivo', 'error'))
+      .finally(() => setLoading(false))
+
+    return () => { if (url) URL.revokeObjectURL(url) }
+  }, [id])
+
   const handleDownload = () => {
-    showToast('Descargando documento...')
-    const a = document.createElement('a')
-    a.href = `/api/v1/documents/${id}/download`
-    a.download = doc?.nombre || 'documento'
-    a.click()
+    client.get(`/documents/${id}/download`, { responseType: 'blob' })
+      .then((res) => {
+        const url = URL.createObjectURL(res.data)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = doc?.nombre || 'documento'
+        a.click()
+        URL.revokeObjectURL(url)
+      })
+      .catch(() => showToast('Error al descargar', 'error'))
   }
 
   const handlePrint = () => {
-    const win = window.open(previewSrc, '_blank')
+    if (!blobUrl) return
+    const win = window.open(blobUrl, '_blank')
     win?.print()
   }
 
@@ -42,7 +63,7 @@ export default function PreviewPage() {
       <div className="pdf-shell">
         <div className="pdf-topbar">
           <div className={`file-icon ${doc?.tipo || 'pdf'}`} style={{ width: 26, height: 30, fontSize: 8 }}>
-            {(doc?.tipo || 'pdf').toUpperCase()}
+            {(doc?.extension || 'pdf').toUpperCase()}
           </div>
           <span className="pdf-title">{doc?.nombre || 'Vista previa'}</span>
           <div className="pdf-toolbar">
@@ -72,12 +93,16 @@ export default function PreviewPage() {
         </div>
 
         <div className="pdf-content">
-          {isPdf && (
+          {loading && (
+            <span style={{ color: '#ccc' }}>Cargando archivo...</span>
+          )}
+
+          {!loading && blobUrl && isPdf && (
             <Document
-              file={previewSrc}
+              file={blobUrl}
               onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-              onLoadError={() => showToast('Error al cargar el PDF', 'error')}
-              loading={<span style={{ color: '#ccc' }}>Cargando PDF...</span>}
+              onLoadError={() => showToast('Error al renderizar el PDF', 'error')}
+              loading={<span style={{ color: '#ccc' }}>Procesando PDF...</span>}
             >
               <Page
                 pageNumber={pageNumber}
@@ -88,15 +113,22 @@ export default function PreviewPage() {
             </Document>
           )}
 
-          {isImage && (
+          {!loading && blobUrl && isImage && (
             <img
-              src={previewSrc}
+              src={blobUrl}
               alt={doc?.nombre}
               style={{ maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', borderRadius: 4 }}
             />
           )}
 
-          {!isPdf && !isImage && (
+          {!loading && !blobUrl && (
+            <div style={{ color: '#ccc', textAlign: 'center' }}>
+              <p style={{ marginBottom: 12 }}>No se pudo cargar la vista previa.</p>
+              <button className="btn btn-primary" onClick={handleDownload}>Descargar archivo</button>
+            </div>
+          )}
+
+          {!loading && blobUrl && !isPdf && !isImage && (
             <div style={{ color: '#ccc', textAlign: 'center' }}>
               <p style={{ marginBottom: 12 }}>Vista previa no disponible para este tipo de archivo.</p>
               <button className="btn btn-primary" onClick={handleDownload}>Descargar archivo</button>

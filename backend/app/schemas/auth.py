@@ -1,3 +1,5 @@
+import uuid
+
 from pydantic import BaseModel, EmailStr
 
 
@@ -6,14 +8,8 @@ class LoginRequest(BaseModel):
     password: str
 
 
-class TokenResponse(BaseModel):
-    access_token: str
-    token_type: str = "bearer"
-    user: "UserPublic"
-
-
 class UserPublic(BaseModel):
-    id: str
+    id: uuid.UUID
     nombre_completo: str
     email: str
     rol: str
@@ -22,6 +18,12 @@ class UserPublic(BaseModel):
     cuota_bytes: int
 
     model_config = {"from_attributes": True}
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserPublic
 
 
 class ChangePasswordRequest(BaseModel):
