@@ -1,3 +1,40 @@
+# Materiales de referencia (no son código del proyecto)
 Materiales/
 DOCUSFLOW_AGENT_CONTEXT.md
-frontend/DOCUSFLOW_CONTEXT.md
+
+# Entornos
+.env
+.env.local
+.env.*.local
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# Docker
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# Alembic compiled
+backend/alembic/versions/*.pyc
