@@ -1,11 +1,23 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from app.core.storage import ensure_bucket_exists
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await ensure_bucket_exists()
+    yield
+
 
 app = FastAPI(
     title="DocusFlow API",
     version="0.1.0",
     docs_url="/docs",
     redoc_url="/redoc",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
