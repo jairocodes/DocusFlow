@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import PreviewPage from './pages/PreviewPage'
 import FolderPage from './pages/FolderPage'
+import SearchPage from './pages/SearchPage'
 
 function ProtectedLayout({ children }) {
   const token = useAuthStore((s) => s.token)
@@ -30,8 +31,8 @@ export default function App() {
         <Route path="/preview/:id" element={<ProtectedLayout><PreviewPage /></ProtectedLayout>} />
         <Route path="/folder/:id" element={<ProtectedLayout><FolderPage /></ProtectedLayout>} />
 
+        <Route path="/search" element={<ProtectedLayout><SearchPage /></ProtectedLayout>} />
         {/* Rutas placeholder — se completarán en features posteriores */}
-        <Route path="/search" element={<ProtectedLayout><div className="content"><p style={{color:'var(--text3)'}}>Búsqueda avanzada — próximamente</p></div></ProtectedLayout>} />
         <Route path="/shared" element={<ProtectedLayout><div className="content"><p style={{color:'var(--text3)'}}>Compartidos conmigo — próximamente</p></div></ProtectedLayout>} />
         <Route path="/recent" element={<ProtectedLayout><div className="content"><p style={{color:'var(--text3)'}}>Recientes — próximamente</p></div></ProtectedLayout>} />
         <Route path="/expedientes" element={<ProtectedLayout><div className="content"><p style={{color:'var(--text3)'}}>Expedientes aduaneros — próximamente</p></div></ProtectedLayout>} />
