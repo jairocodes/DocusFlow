@@ -8,12 +8,14 @@ import UploadModal from '../components/ui/UploadModal'
 import { getDashboardStats } from '../api/stats'
 import { listDocuments, deleteDocument } from '../api/documents'
 import { listFolders } from '../api/folders'
+import { listTags } from '../api/tags'
 import useToastStore from '../store/useToastStore'
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null)
   const [docs, setDocs] = useState([])
   const [folders, setFolders] = useState([])
+  const [tags, setTags] = useState([])
   const [total, setTotal] = useState(0)
   const [uploadOpen, setUploadOpen] = useState(false)
   const showToast = useToastStore((s) => s.show)
@@ -21,15 +23,17 @@ export default function Dashboard() {
 
   const load = useCallback(async () => {
     try {
-      const [statsData, docsData, foldersData] = await Promise.all([
+      const [statsData, docsData, foldersData, tagsData] = await Promise.all([
         getDashboardStats(),
         listDocuments({ page: 1, limit: 20 }),
         listFolders(),
+        listTags(),
       ])
       setStats(statsData)
       setDocs(docsData.data)
       setTotal(docsData.total)
       setFolders(foldersData)
+      setTags(tagsData)
     } catch {
       showToast('Error al cargar los datos', 'error')
     }
@@ -91,6 +95,7 @@ export default function Dashboard() {
         open={uploadOpen}
         onClose={() => setUploadOpen(false)}
         folders={folders}
+        tags={tags}
         onUploaded={() => { setUploadOpen(false); load() }}
       />
     </>

@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.storage import ensure_bucket_exists
-from app.api import auth, users, documents, stats, folders
+from app.api import auth, users, documents, stats, folders, tags
 
 
 @asynccontextmanager
@@ -35,6 +35,7 @@ app.include_router(users.router, prefix=API_PREFIX)
 app.include_router(documents.router, prefix=API_PREFIX)
 app.include_router(stats.router, prefix=API_PREFIX)
 app.include_router(folders.router, prefix=API_PREFIX)
+app.include_router(tags.router, prefix=API_PREFIX)
 
 
 @app.get("/health")
