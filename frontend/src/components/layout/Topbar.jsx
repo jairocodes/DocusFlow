@@ -1,4 +1,15 @@
-export default function Topbar({ title, onSearch, onUpload }) {
+import { useNavigate } from 'react-router-dom'
+
+export default function Topbar({ title, onUpload }) {
+  const navigate = useNavigate()
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter') {
+      const q = e.target.value.trim()
+      navigate(q ? `/search?q=${encodeURIComponent(q)}` : '/search')
+    }
+  }
+
   return (
     <div className="topbar">
       <span className="page-title">{title}</span>
@@ -11,17 +22,19 @@ export default function Topbar({ title, onSearch, onUpload }) {
           type="text"
           className="search-input"
           placeholder="Buscar por nombre, texto extraído o etiqueta..."
-          onChange={(e) => onSearch?.(e.target.value)}
+          onKeyDown={handleSearch}
         />
       </div>
 
       <div className="topbar-actions">
-        <button className="btn btn-primary" onClick={onUpload}>
-          <svg viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" />
-          </svg>
-          Subir archivo
-        </button>
+        {onUpload && (
+          <button className="btn btn-primary" onClick={onUpload}>
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" />
+            </svg>
+            Subir archivo
+          </button>
+        )}
       </div>
     </div>
   )
