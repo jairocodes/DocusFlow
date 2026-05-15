@@ -4,6 +4,7 @@ import Sidebar from './components/layout/Sidebar'
 import Toast from './components/ui/Toast'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import PreviewPage from './pages/PreviewPage'
 
 function ProtectedLayout({ children }) {
   const token = useAuthStore((s) => s.token)
@@ -24,14 +25,8 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/"
-          element={
-            <ProtectedLayout>
-              <Dashboard />
-            </ProtectedLayout>
-          }
-        />
+        <Route path="/" element={<ProtectedLayout><Dashboard /></ProtectedLayout>} />
+        <Route path="/preview/:id" element={<ProtectedLayout><PreviewPage /></ProtectedLayout>} />
 
         {/* Rutas placeholder — se completarán en features posteriores */}
         <Route path="/search" element={<ProtectedLayout><div className="content"><p style={{color:'var(--text3)'}}>Búsqueda avanzada — próximamente</p></div></ProtectedLayout>} />
